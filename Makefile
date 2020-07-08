@@ -4,7 +4,8 @@ CODE := $(addsuffix .tex,$(filter-out %.tex,$(wildcard code/*)))
 FIGS := $(patsubst %.svg,%.pdf,$(wildcard fig/*.svg))
 ODGS := $(patsubst %.odg,%.pdf,$(wildcard fig/*.odg))
 PLOT := $(patsubst %.gp,%.tex,$(wildcard data/*.gp))
-DEPS := rev.tex code/fmt.tex abstract.txt $(CODE) $(FIGS) $(ODGS) $(PLOT)
+PYPLOT := $(patsubst %.py,%.pdf,$(wildcard pyplot/*.py))
+DEPS := rev.tex code/fmt.tex abstract.txt $(CODE) $(FIGS) $(ODGS) $(PLOT) $(PYPLOT)
 LTEX := --latex-args="-synctex=1 -shell-escape"
 BTEX := --bibtex-args="-min-crossrefs=99"
 SHELL:= $(shell echo $$SHELL)
@@ -41,6 +42,12 @@ fig/%.pdf: fig/%.svg ## generate pdf from svg
 
 fig/%.pdf: fig/%.odg ## generate pdf from LibreOffice Draw
 	bin/odg2pdf.sh $^ $@
+
+pyplot/%.svg: pyplot/%.py ## generate svg from pyplot
+	OUT=$@ PYTHONPATH=pyplot/shared python $^
+
+pyplot/%.pdf: pyplot/%.svg ## generate pdf from pyplot svg
+	bin/svg2pdf.sh ${CURDIR}/$^ ${CURDIR}/$@
 
 data/%.tex: data/%.gp ## generate plot
 	gnuplot $^
