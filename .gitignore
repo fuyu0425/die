@@ -14,12 +14,11 @@
 /die.tar.gz
 /rev.tex
 /abstract.txt
-/code/*.tex
-!/code/fmt.tex
 !/figs/*.pdf
 !/figs/*.eps
 !/data/*.pdf
 !/data/*.eps
+!/pyplot/*.pdf
 .latexrun.db
 /_minted-p/
 /p.synctex.gz
