@@ -81,6 +81,8 @@ for l in open(pn_abst):
     if "{abstract}" in l:
         continue
 
+    l = re.sub(r"\\footnote\{.*\}", "", l)
+
     for k in sorted(kw.keys(), reverse=True):
         l = l.replace("\\%s" % k, kw[k])
 
