@@ -7,7 +7,7 @@ fi
 
 candidates=(/Applications/LibreOffice.app/Contents/MacOS/soffice)
 
-for pn in candidates; do
+for pn in ${candidates}; do
     if [[ -e $pn ]]; then
         SOFFICE=$pn
         break
@@ -23,5 +23,5 @@ if [[ -z $SOFFICE ]]; then
     fi
 fi
 
-$SOFFICE --convert-to pdf $1 --outdir $(dirname $1)
-pdfcrop $2 $2
+$SOFFICE --convert-to pdf "$1" --outdir $(dirname "$1")
+pdfcrop "$2" "$2"
