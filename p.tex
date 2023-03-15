@@ -1,8 +1,13 @@
+% NOTE: create arxiv.tex and uncomment the following line
+% \def\inarxiv{}
 \documentclass[11pt,letterpaper,twocolumn]{article}
 
 % conference specific style
 \usepackage[11pt,nocopyright]{sigmin}
 \usepackage[square,comma,numbers,sort&compress]{natbib}
+
+% \pagestyle{plain}
+% \pagestyle{empty}
 
 % common packages
 \include{pkgs}
@@ -15,12 +20,15 @@
 
 \newcommand{\XX}[0]{\textcolor{red}{XXX}}
 \newcommand{\XXX}[1]{\textcolor{red}{XXX: #1}}
+\newcommand{\rev}[1]{\textcolor{red}{#1}}
 \newcommand{\TODO}[1]{\noindent{\color{Melon} {\bf \fbox{TODO:}} #1}}
 
 
 \input{cmds}
 % To be compatible with Overleaf
 \IfFileExists{rev.tex}{\input{rev}}{}
+
+% \myexternaldocument{arxiv}
 
 \begin{document}
 

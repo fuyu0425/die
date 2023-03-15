@@ -1,5 +1,6 @@
 \renewcommand{\ttdefault}{pxtt}
 
+\newcommand{\HREF}[1]{\href{#1}{#1}}
 \newcommand{\URL}{\url}
 \newcommand{\cc}[1]{\mbox{\smaller[0.5]\texttt{#1}}}
 
@@ -117,6 +118,15 @@
 \noindent{\bf #1}
 }
 
+% without vspace version
+\newcommand{\PPI}[1]{
+  \noindent{\bf \IfEndWith{#1}{.}{#1}{#1.}}
+}
+
+\newcommand{\PNI}[1]{
+  \noindent{\bf #1}
+}
+
 \newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
 \newcommand{\V}{\checkmark}
 \newcommand{\X}{{\footnotesize $\times$}\xspace}
@@ -156,3 +166,48 @@
 \end{tabular}
 \vspace{-10pt}
 }
+
+% \newcommand{\algorithmautorefname}{Algorithm}
+\definecolor{ForestGreen}{RGB}{34,139,34}
+\newcommand{\cmark}{\color{ForestGreen}\ding{51}}
+\newcommand{\xmark}{\color{red}\ding{55}}
+\newcommand{\trimark}{\color{brown}\ding{115}}
+
+% define
+\newcommand{\onlyarxiv}[1] {\ifdefined\inarxiv{#1}\else{}\fi}
+\newcommand{\onlymain}[1] {\ifdefined\inarxiv{}\else{#1}\fi}
+
+\makeatletter
+\newcommand*{\addFileDependency}[1]{% argument=file name and extension
+  \typeout{(#1)}% latexmk will find this if $recorder=0
+  % however, in that case, it will ignore #1 if it is a .aux or
+  % .pdf file etc and it exists! If it doesn't exist, it will appear
+  % in the list of dependents regardless)
+  %
+  % Write the following if you want it to appear in \listfiles
+  % --- although not really necessary and latexmk doesn't use this
+  %
+  \@addtofilelist{#1}
+  %
+  % latexmk will find this message if #1 doesn't exist (yet)
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}\makeatother
+
+\newcommand*{\myexternaldocument}[1]{%
+  \externaldocument{#1}%
+  \addFileDependency{#1.tex}%
+  \addFileDependency{#1.aux}%
+}
+
+% https://latex.org/forum/viewtopic.php?t=8320
+\newcommand{\ignore}[2]{\hspace{0in}#2}
+
+\newcommand{\replacex}[1]{%
+  \StrLen{#1}[\stringlength]%
+  \newcount\loopcounter
+  \loopcounter=0
+  \loop\ifnum\loopcounter<\stringlength%
+    x%
+    \advance\loopcounter by 1%
+    \repeat%
+  }
