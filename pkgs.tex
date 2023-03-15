@@ -20,7 +20,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{times}
 \usepackage{fancyhdr,lastpage}
-\usepackage{enumitem}
+\usepackage[inline]{enumitem}
 \usepackage[labelfont=bf,font=small,skip=5pt]{caption}
 % NOTE: either subfigure of subcaption; not both
 %\usepackage{subfigure}
@@ -36,11 +36,20 @@
 \usepackage{siunitx}
 
 % pseudo code
+%%%% minted
 \makeatletter
 \@namedef{ver@lineno.sty}{9999/12/31}
 \@namedef{opt@lineno.sty}{}
 \makeatother
 \usepackage{minted}
+%%%% other method
+
+% \usepackage{algorithm}
+%\usepackage{algorithm2e}
+% \usepackage[noend]{algpseudocode}
+% \algrenewcommand\algorithmicindent{0.75em}
+
+%%%%
 
 % balance bibliography
 \usepackage{balance}
@@ -49,3 +58,12 @@
 
 % use \num{123456} -> 123,456
 \sisetup{group-separator={,},group-minimum-digits={3},output-decimal-marker={.}}
+
+\usepackage[super]{nth}
+\usepackage{pifont}
+\usepackage{import}
+\usepackage{placeins}
+\usepackage{longtable}
+\usepackage{supertabular}
+\usepackage{xr}
+\usepackage{pgffor}
