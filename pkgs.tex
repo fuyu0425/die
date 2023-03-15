@@ -14,7 +14,6 @@
 }
 \usepackage{amsmath,amsopn,amssymb}
 \usepackage{colortbl}
-\usepackage{subfigure}
 \usepackage{endnotes,microtype,xspace,graphicx,fancyvrb,multirow}
 \usepackage{booktabs}
 \usepackage{array,underscore,relsize}
@@ -23,6 +22,8 @@
 \usepackage{fancyhdr,lastpage}
 \usepackage{enumitem}
 \usepackage[labelfont=bf,font=small,skip=5pt]{caption}
+% NOTE: either subfigure of subcaption; not both
+%\usepackage{subfigure}
 \usepackage[belowskip=0pt,aboveskip=2pt]{subcaption}
 \pagestyle{fancy}
 \fancyhf{}
@@ -39,6 +40,7 @@
 
 % balance bibliography
 \usepackage{balance}
+\usepackage{multicol}
 
 
 % use \num{123456} -> 123,456
