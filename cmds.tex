@@ -13,6 +13,9 @@
 \fvset{fontsize=\scriptsize,xleftmargin=8pt,numbers=left,numbersep=5pt}
 
 \input{code/fmt}
+\IfFileExists{code/fmt.tex}
+{\input{code/fmt}}
+{\input{code/fmt-default}}
 \newcommand{\figrule}{\hrule width \hsize height .33pt}
 \newcommand{\coderule}{\vspace{-0.5em}\figrule\vspace{0.2em}}
 
