@@ -3,7 +3,7 @@
 - more maintained sty files
 - modern visualization/data processing/plotting than gnuplot (ideally,
   python lib that supports pdf)
-  
+
   - option: d3.js + chrome headless support to svg/pdf
   - check: python seaborn/bokeh/ggplot/pygal/plotly/geoplotlib/gleam
     (ref. https://blog.modeanalytics.com/python-data-visualization-libraries/)
@@ -12,7 +12,18 @@
 
 - example in this main repo (as an example and for studying)
 - summarize pointers for latex beginner (e.g., explaining common issues)
-  - e.g., ~ use 
+  - e.g., ~ use
 - summarize dependencies for mac/windows
 - better code highlighting (+ ref support)
 - spell check on svg
+- check draftable for generating diffs (https://draftable.com/)
+
+- Check
+show-diff-$(REV_FIXED): $(DEPS)
+	latexdiff-vc --flatten --force --type=CULINECHBAR --packages=amsmath,hyperref,siunitx \
+			  -f FLOATSAFE --exclude-safecmd="algorithm" \
+			  --math-markup=off --disable-citation-markup \
+			  --git -r $(REV_FIXED) -r $(HEAD) $(ROOT).tex
+	latexmk  -interaction=nonstopmode -jobname=$(PROPOSAL)-diff-$(REV_FIXED)-$(HEAD) -pdf $(ROOT)-diff$(REV_FIXED)-$(HEAD).tex
+	xdg-open $(PROPOSAL)-diff-$(REV_FIXED)-$(HEAD).pdf
+	latexmk  -c -jobname=$(PROPOSAL)-diff-$(REV_FIXED)-$(HEAD) $(ROOT)-diff$(REV_FIXED)-$(HEAD).tex
