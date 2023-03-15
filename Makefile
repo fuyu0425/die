@@ -8,7 +8,7 @@ PYPLOT := $(patsubst %.py,%.pdf,$(wildcard pyplot/*.py))
 DEPS := rev.tex code/fmt.tex abstract.txt $(CODE) $(FIGS) $(ODGS) $(PLOT) $(PYPLOT)
 LTEX := --latex-args="-synctex=1 -shell-escape"
 BTEX := --bibtex-args="-min-crossrefs=99"
-SHELL:= $(shell echo $$SHELL)
+# SHELL:= $(shell echo $$SHELL)
 
 all: $(DEPS) ## generate a pdf
 	@TEXINPUTS="sty:" bin/latexrun $(LTEX) $(BTEX) $(MAIN)
@@ -56,11 +56,11 @@ data/%.pdf: data/%.py ## generate plot
 	python3 $^
 
 draft: $(DEPS) ## generate pdf with a draft info
-	echo -e '\\newcommand*{\\DRAFT}{}' >> rev.tex
+	@printf '\\newcommand*{\\DRAFT}{}' >> rev.tex
 	@TEXINPUTS="sty:" bin/latexrun $(LTEX) $(BTEX) $(MAIN)
 
 watermark: $(DEPS) ## generate pdf with a watermark
-	echo -e '\\usepackage[firstpage]{draftwatermark}' >> rev.tex
+	@printf '\\usepackage[firstpage]{draftwatermark}' >> rev.tex
 	@TEXINPUTS="sty:" bin/latexrun $(LTEX) $(BTEX) $(MAIN)
 
 spell: ## run a spell check
@@ -87,7 +87,7 @@ distclean: clean ## clean up completely
 abstract.txt: abstract.tex $(MAIN).tex ## generate abstract.txt
 	@bin/mkabstract $(MAIN).tex $< | fmt -w72 > $@
 
-text: 
+text:
 	@bin/mktext p.tex
- 
+
 .PHONY: all help FORCE draft clean spell distclean init bib
