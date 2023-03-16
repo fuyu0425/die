@@ -1,0 +1,150 @@
+% Thin template for NSF proposals
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{huawei}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[empty]{fullpage}
+\usepackage{times}
+
+\usepackage[square,comma,numbers,sort]{natbib}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[breaklinks,
+%	    draft,
+%	    final,
+	    pdfdisplaydoctitle=true,
+%	    pdfborderstyle={/S/U/W 1}, % try for a dashed underline
+%	    pdfborderstyle={/S/D/D[1 4]/W 1}, % try for a dashed underline
+%	    bookmarksdepth=3,
+	    pagebackref,
+	    bookmarksnumbered=true,
+	    linktocpage,
+	    citebordercolor={.60 .60 .60},
+	    linkbordercolor={.60 .60 .60},
+	    urlbordercolor={.60 .60 .60},
+	    pdfpagelabels,
+	    pdfpagelayout=SinglePage,
+	    hyperfootnotes=false,
+%	    letterpaper,
+%	    pdftitle=
+%	    {Proposal Title},
+%	    pdfauthor={Authors}
+	    ]{hyperref}
+
+\renewcommand{\ttdefault}{cmtt}
+
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{
+  \ifcase #1 %
+    (Not cited.) %
+  \or
+    {(Referenced on page #2.)}%
+  \else
+    {(Referenced on pages #2.)}%
+  \fi
+}
+\renewcommand*{\backrefsep}{, }
+\renewcommand*{\backreftwosep}{ and }
+\renewcommand*{\backreflastsep}{, and }
+
+\usepackage{ccaption}
+\captionnamefont{\sc\fontsize{10}{12}\selectfont}
+\captiontitlefont{\fontsize{10}{12}\selectfont}
+\captiondelim{---}
+
+\frenchspacing
+
+\setlength{\footskip}{30pt}
+
+% \newcommand{\threequartdash}{\hbox{--\kern-.25em--}}
+% \renewcommand{\labelitemi}{\m@th\threequartdash}
+% \renewcommand{\labelitemii}{\m@th$\ast$}
+% \renewcommand{\labelitemiii}{\m@th\bullet}
+
+\def\paragraph{\@startsection{paragraph}{4}{\z@}%
+	      {1.85ex \@plus .15ex \@minus .1ex}%
+	      {-.5\parindent}%
+	      {\normalfont\normalsize\bfseries}}
+
+
+% DM's macro for splitting the sections up
+% USAGE:
+%   \begin{submit}{section-letter}{submit-file-name}
+%	text to include in that submitted section of proposal
+%   \end{submit}
+%
+\newwrite\submitfile
+\newcounter{submitstart}
+\setcounter{submitstart}{1}
+\newcounter{submitend}
+\newenvironment{submit}[2]%
+{\renewcommand{\thepage}{#1-\arabic{page}}
+\renewcommand{\thesection}{#1.\arabic{section}}
+\gdef\submitfilename{#2}
+\addtocounter{submitstart}{\value{page}}
+\addtocounter{submitstart}{-1}
+\setcounter{page}{1}}%
+{\setcounter{submitend}{\value{submitstart}}
+\addtocounter{submitend}{\value{page}}
+\addtocounter{submitend}{-1}
+\immediate\openout\submitfile=\submitfilename
+\immediate\write\submitfile{%
+\string\documentclass{article}^^J%
+\string\usepackage{pdfpages}^^J%
+\string\begin{document}^^J%
+\string\includepdf%
+[pages=\the\value{submitstart}-\the\value{submitend}]%
+{\jobname.pdf}^^J%
+\string\end{document}}
+\immediate\closeout\submitfile
+\newpage
+}
+
+% Titles are in 14-point bold type, with no date, and with no
+% change in the empty page headers.  The whole author section is 12 point
+% italic--- you must use {\rm } around the actual author names to get
+% them in roman.
+%
+\def\maketitle{\par
+ \begingroup
+   \renewcommand\thefootnote{\fnsymbol{footnote}}%
+   \def\@makefnmark{\hbox to\z@{$\m@th^{\@thefnmark}$\hss}}%
+    \long\def\@makefntext##1{\parindent 1em\noindent
+            \hbox to1.8em{\hss$\m@th^{\@thefnmark}$}##1}%
+   \if@twocolumn
+     \twocolumn[\@maketitle]%
+     \else \newpage
+     \global\@topnum\z@
+     \@maketitle \fi\@thanks
+ \endgroup
+ \setcounter{footnote}{0}%
+ \let\maketitle\relax
+ \let\@maketitle\relax
+ \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax}
+
+\def\@maketitle{\newpage
+ \vbox to 0.85in{
+ \vspace*{\fill}
+ % \vskip 2em
+ \begin{center}%
+  {\Large\bf \@title \par}%
+  \vskip 0.375in minus 0.300in
+  {\large\it
+   \lineskip .5em
+   \begin{tabular}[t]{c}\@author
+   \end{tabular}\par}%
+ \end{center}%
+ \par
+ \vspace*{\fill}
+ }
+}
+
+
+% The abstract is preceded by a 12-pt bold centered heading
+\def\abstract{\begin{center}%
+  {\large\bf \abstractname\vspace{-.5em}\vspace{\z@}}%
+  \end{center}}
+  \def\endabstract{}
+
+\def\section{\@startsection {section}{1}{\z@}{-2ex plus-.4ex}{1.5ex plus.3ex}{\reset@font\large\bf}}
+\def\subsection{\@startsection {subsection}{1}{\z@}{-1ex plus-.2ex}{0.75ex plus.15ex}{\reset@font\bf}}
