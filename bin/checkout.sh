@@ -1,5 +1,4 @@
 #!/bin/bash -x
-
 ROOT=$(git rev-parse --show-toplevel)
 TMPD=$(mktemp -d /tmp/latexdiff.XXXXXXXXXX)
 HERE=$(realpath --relative-to=$ROOT $(pwd))
@@ -18,4 +17,8 @@ OLDD=$OLD_REPO/$HERE
 
 make
 
-cp -f p.pdf $NEWD/p-$1.pdf
+if [ -z $2 ]; then
+    cp -f $MAIN.pdf $NEWD/${MAIN}-${1}.pdf
+else
+    cp -f $MAIN.pdf $NEWD/${2}.pdf
+fi

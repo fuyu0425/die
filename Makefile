@@ -24,7 +24,7 @@ diff: $(DEPS) ## generate diff-highlighed pdf
 
 checkout: $(DEPS) ## generate checkout pdf
 	@[ "${COMMIT}" ] || ( echo "COMMIT is not set"; exit 1 )
-	@bin/checkout.sh $(COMMIT)
+	@ MAIN=${MAIN} bin/checkout.sh $(COMMIT) $(NAME)
 
 help: ## print help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
