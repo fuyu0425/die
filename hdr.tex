@@ -3,9 +3,7 @@
 % when 'make draft'
 \ifdefined\DRAFT
  \pagestyle{fancyplain}
- \lhead{Rev.~\therev}
- \rhead{\thedate}
- \cfoot{\thepage\ of \pageref{LastPage}}
+ \cfoot{Rev.~\therev \hfill \thepage\ of \pageref{LastPage} \hfill \thedate}
 \fi
 
 % blind

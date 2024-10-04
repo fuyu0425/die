@@ -33,7 +33,7 @@ help: ## print help
 rev.tex: FORCE
 	@printf '\\gdef\\therev{%s}\n\\gdef\\thedate{%s}\n' \
 	   "$(shell git rev-parse --short HEAD)"            \
-	   "$(shell git log -1 --format='%ci' HEAD)" > $@
+	   "$(shell git log -1 --format='%cd' --date=format:'%Y-%m-%d %H:%M:%S' HEAD)" > $@
 
 code/%.tex: code/% ## build highlighted tex code from source code
 	pygmentize -P tabsize=4 -P mathescape -f latex $^ | bin/mark.py > $@
