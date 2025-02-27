@@ -6,7 +6,8 @@ ODGS := $(patsubst %.odg,%.pdf,$(wildcard fig/*.odg))
 PLOT := $(patsubst %.gp,%.tex,$(wildcard data/*.gp))
 PYPLOT := $(patsubst %.py,%.pdf,$(wildcard pyplot/*.py))
 DEPS := rev.tex code/fmt.tex abstract.txt $(CODE) $(FIGS) $(ODGS) $(PLOT) $(PYPLOT)
-LTEX := --latex-args="-synctex=1 -shell-escape"
+LTEX := --latex-args="-synctex=1"
+# LTEX := --latex-args="-synctex=1 -shell-escape" # for minted version < 3 texlive < 2024
 BTEX := --bibtex-args="-min-crossrefs=99"
 # SHELL:= $(shell echo $$SHELL)
 
@@ -34,6 +35,9 @@ rev.tex: FORCE
 	@printf '\\gdef\\therev{%s}\n\\gdef\\thedate{%s}\n' \
 	   "$(shell git rev-parse --short HEAD)"            \
 	   "$(shell git log -1 --format='%cd' --date=format:'%Y-%m-%d %H:%M:%S' HEAD)" > $@
+
+code/%.move.tex: code/%.move ## build highlighted tex code from source code
+  pygmentize -P tabsize=4 -P mathescape -x -l ./pygments/lexers/move.py:MoveLexer -f latex $^ | bin/mark.py > $@
 
 code/%.tex: code/% ## build highlighted tex code from source code
 	pygmentize -P tabsize=4 -P mathescape -f latex $^ | bin/mark.py > $@

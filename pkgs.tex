@@ -41,8 +41,12 @@
 \@namedef{ver@lineno.sty}{9999/12/31}
 \@namedef{opt@lineno.sty}{}
 \makeatother
-\usepackage[outputdir=latex.out]{minted}
+\usepackage{minted} % for minted v3+
+
+% \usepackage[outputdir=latex.out]{minted} % for older minted and need -shell-escape flags
 %%%% other method
+% listings
+% \usepackage{listings, listings-rust}
 
 % \usepackage{algorithm}
 %\usepackage{algorithm2e}
@@ -67,3 +71,4 @@
 \usepackage{supertabular}
 \usepackage{xr}
 \usepackage{pgffor}
+\usepackage{comment}
