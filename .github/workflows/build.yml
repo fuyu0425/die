@@ -16,7 +16,7 @@ jobs:
             git config --global --add safe.directory $(pwd)
             make draft
       - name: Upload PDF
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pdf
           path: p.pdf
@@ -37,7 +37,7 @@ jobs:
             git config --global --add safe.directory $(pwd)
             make draft
       - name: Upload PDF
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pdf
           path: p.pdf
