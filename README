@@ -14,15 +14,11 @@ die: a paper template
 
   - if you have none,
 
-    $ git clone --depth=1 git@github.com:tsgates/die.git
+    $ git clone --depth=1 git@github.com:fuyu0425/die.git
 
   - if you have a git-repo to work on,
 
-    $ git subtree add --squash git@github.com:tsgates/die.git master -P paper
-
-  - or
-
-    $ wget https://github.com/tsgates/die/releases/download/latest/die.tar.gz
+    $ git subtree add --squash git@github.com:fuyu0425/die.git master -P paper
 
 2. build it:
 
