@@ -1,8 +1,8 @@
 on: [push]
 jobs:
-  # github.com or other github.com compatible
+  # github.com
   build_latex:
-    if: ${{ github.server_url != 'https://github.gatech.edu' }}
+    if: ${{ github.server_url == 'https://github.com' }}
     name: Build draft PDF
     runs-on: ubuntu-latest # github runner
     steps:
@@ -37,7 +37,28 @@ jobs:
             git config --global --add safe.directory $(pwd)
             make draft
       - name: Upload PDF
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
+        with:
+          name: pdf
+          path: p.pdf
+
+  # others like gitea
+  build_latex_others:
+    if: ${{ github.server_url != 'https://github.com' && github.server_url != 'https://github.gatech.edu' }}
+    name: Build draft PDF
+    runs-on: ubuntu-latest # github runner
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+      - name: Build
+        uses: xu-cheng/texlive-action/full@v1
+        with:
+          run: |
+            apk add make git coreutils inkscape
+            git config --global --add safe.directory $(pwd)
+            make draft
+      - name: Upload PDF
+        uses: actions/upload-artifact@v3
         with:
           name: pdf
           path: p.pdf
