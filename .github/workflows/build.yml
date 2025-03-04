@@ -1,8 +1,8 @@
 on: [push]
 jobs:
-  # github.com
+  # github.com or other github.com compatible
   build_latex:
-    if: ${{ github.server_url == 'https://github.com' }}
+    if: ${{ github.server_url != 'https://github.gatech.edu' }}
     name: Build draft PDF
     runs-on: ubuntu-latest # github runner
     steps:
@@ -21,7 +21,7 @@ jobs:
           name: pdf
           path: p.pdf
 
-  # enterprise github (gatech here)
+  # enterprise github (gatech here); special handling
   build_latex_gatech:
     if: ${{ github.server_url == 'https://github.gatech.edu' }}
     name: Build draft PDF
