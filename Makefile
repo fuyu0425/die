@@ -11,10 +11,17 @@ LTEX := --latex-args="-synctex=1"
 # LTEX := --latex-args="-synctex=1 -shell-escape" # for minted version < 3 texlive < 2024
 BTEX := --bibtex-args="-min-crossrefs=99"
 # SHELL:= $(shell echo $$SHELL)
+REPO_NAME := $(shell if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then \
+                 git rev-parse --show-toplevel | xargs basename; \
+              else \
+                 basename "$$(pwd)"; \
+              fi)
 
 all: $(DEPS) ## generate a pdf
 	@TEXINPUTS="sty:" bin/latexrun $(LTEX) $(BTEX) $(MAIN)
 	cp latex.out/$(MAIN).synctex.gz .
+	cp p.pdf $(REPO_NAME).pdf
+	bin/revert-pdf.sh p.pdf # for emacs
 
 submit: $(DEPS) ## proposal function
 	@for f in $(wildcard submit-*.tex); do \
@@ -53,7 +60,7 @@ fig/%.pdf: fig/%.odg ## generate pdf from LibreOffice Draw
 	bin/odg2pdf.sh $^ $@
 
 fig/%.pdf: fig/%.ai ## generate pdf from Adobe Illustrator
-  bin/ai2pdf.sh $^ $@
+	bin/ai2pdf.sh $^ $@
 
 pyplot/%.svg: pyplot/%.py ## generate svg from pyplot
 	OUT=$@ PYTHONPATH=pyplot/shared python $^
