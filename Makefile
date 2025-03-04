@@ -3,9 +3,10 @@ DIFF ?= HEAD^
 CODE := $(addsuffix .tex,$(filter-out %.tex,$(wildcard code/*)))
 FIGS := $(patsubst %.svg,%.pdf,$(wildcard fig/*.svg))
 ODGS := $(patsubst %.odg,%.pdf,$(wildcard fig/*.odg))
+AIS := $(patsubst %.ai,%.pdf,$(wildcard fig/*.ai))
 PLOT := $(patsubst %.gp,%.tex,$(wildcard data/*.gp))
 PYPLOT := $(patsubst %.py,%.pdf,$(wildcard pyplot/*.py))
-DEPS := rev.tex code/fmt.tex abstract.txt $(CODE) $(FIGS) $(ODGS) $(PLOT) $(PYPLOT)
+DEPS := rev.tex code/fmt.tex abstract.txt $(CODE) $(FIGS) $(ODGS) $(AIS) $(PLOT) $(PYPLOT)
 LTEX := --latex-args="-synctex=1"
 # LTEX := --latex-args="-synctex=1 -shell-escape" # for minted version < 3 texlive < 2024
 BTEX := --bibtex-args="-min-crossrefs=99"
@@ -50,6 +51,9 @@ fig/%.pdf: fig/%.svg ## generate pdf from svg
 
 fig/%.pdf: fig/%.odg ## generate pdf from LibreOffice Draw
 	bin/odg2pdf.sh $^ $@
+
+fig/%.pdf: fig/%.ai ## generate pdf from Adobe Illustrator
+  bin/ai2pdf.sh $^ $@
 
 pyplot/%.svg: pyplot/%.py ## generate svg from pyplot
 	OUT=$@ PYTHONPATH=pyplot/shared python $^
