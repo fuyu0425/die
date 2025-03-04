@@ -3,7 +3,7 @@ jobs:
   # github.com
   build_latex:
     if: ${{ github.server_url == 'https://github.com' }}
-    name: Build draft PDF
+    name: Build draft PDF (Github)
     runs-on: ubuntu-latest # github runner
     steps:
       - name: Check out
@@ -24,7 +24,7 @@ jobs:
   # enterprise github (gatech here); special handling
   build_latex_gatech:
     if: ${{ github.server_url == 'https://github.gatech.edu' }}
-    name: Build draft PDF
+    name: Build draft PDF (Gatech)
     runs-on: self-hosted # self hosted runner
     steps:
       - name: Check out
@@ -45,7 +45,7 @@ jobs:
   # others like gitea
   build_latex_others:
     if: ${{ github.server_url != 'https://github.com' && github.server_url != 'https://github.gatech.edu' }}
-    name: Build draft PDF
+    name: Build draft PDF (Others)
     runs-on: ubuntu-latest # github runner
     steps:
       - name: Check out
