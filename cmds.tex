@@ -91,6 +91,20 @@
   \end{itemize}
 }
 
+\newenvironment{itemizesq}{
+  \begin{itemize}[noitemsep,nolistsep]
+    \setlength{\itemsep}{-0pt}
+  }{
+  \end{itemize}
+}
+
+\newenvironment{enumeratesq}{
+  \begin{enumerate}[noitemsep,nolistsep]
+    \setlength{\itemsep}{-0pt}
+  }{
+  \end{enumerate}
+}
+
 %%
 %% NOTE.
 %%  to use circled number in caption, use
