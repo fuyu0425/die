@@ -7,8 +7,8 @@ AIS := $(patsubst %.ai,%.pdf,$(wildcard fig/*.ai))
 PLOT := $(patsubst %.gp,%.tex,$(wildcard data/*.gp))
 PYPLOT := $(patsubst %.py,%.pdf,$(wildcard pyplot/*.py))
 DEPS := rev.tex code/fmt.tex abstract.txt $(CODE) $(FIGS) $(ODGS) $(AIS) $(PLOT) $(PYPLOT)
-LTEX := --latex-args="-synctex=1"
-# LTEX := --latex-args="-synctex=1 -shell-escape" # for minted version < 3 texlive < 2024
+# LTEX := --latex-args="-synctex=1"
+LTEX := --latex-args="-synctex=1 -shell-escape" # for minted version < 3 texlive < 2024
 BTEX := --bibtex-args="-min-crossrefs=99"
 # SHELL:= $(shell echo $$SHELL)
 REPO_NAME := $(shell if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then \
@@ -21,7 +21,7 @@ all: $(DEPS) ## generate a pdf
 	@TEXINPUTS="sty:" bin/latexrun $(LTEX) $(BTEX) $(MAIN)
 	cp latex.out/$(MAIN).synctex.gz .
 	cp p.pdf $(REPO_NAME).pdf
-	bin/revert-pdf.sh p.pdf # for emacs
+	# bin/revert-pdf.sh p.pdf # for emacs
 
 submit: $(DEPS) ## proposal function
 	@for f in $(wildcard submit-*.tex); do \

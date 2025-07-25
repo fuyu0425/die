@@ -91,17 +91,32 @@
   \end{itemize}
 }
 
-\newenvironment{itemizesq}{
-  \begin{itemize}[noitemsep,nolistsep]
-    \setlength{\itemsep}{-0pt}
-  }{
+\newenvironment{itemizesq}[1][]{
+  \begin{itemize}[noitemsep,nolistsep,#1]
+      \setlength{\itemsep}{-0pt}
+    }{
   \end{itemize}
 }
 
-\newenvironment{enumeratesq}{
-  \begin{enumerate}[noitemsep,nolistsep]
-    \setlength{\itemsep}{-0pt}
-  }{
+\newenvironment{enumeratesq}[1][]{
+  \begin{enumerate}[noitemsep,nolistsep,#1]
+      \setlength{\itemsep}{-0pt}
+    }{
+  \end{enumerate}
+}
+
+% no left margin indent
+\newenvironment{itemizesqn}[1][]{
+  \begin{itemize}[noitemsep,nolistsep,leftmargin=*,#1]
+      \setlength{\itemsep}{-0pt}
+    }{
+  \end{itemize}
+}
+
+\newenvironment{enumeratesqn}[1][]{
+  \begin{enumerate}[noitemsep,nolistsep,leftmargin=*,#1]
+      \setlength{\itemsep}{-0pt}
+    }{
   \end{enumerate}
 }
 
