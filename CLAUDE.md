@@ -196,4 +196,4 @@ for substring matching in full-text searches.
   sentence without breaking lines for `\PP{}`
 - Once done editing, build it with `make` and fix any latex bugs!
 - Be aware of https://read.seas.harvard.edu/~kohler/latex.html
-- use \squishlist and \squishend for enumeration list
+- use `itemizesq` and `enumeratesq` environments for compact lists
