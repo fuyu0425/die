@@ -142,4 +142,14 @@ abstract.txt: abstract.tex $(MAIN).tex ## generate abstract.txt
 text:
 	@bin/mktext p.tex
 
-.PHONY: all help FORCE draft clean spell distclean init bib
+proof: ## check weasel words, passive voice, duplicates
+	@echo "weasel words: "
+	@sh bin/weasel.sh *.tex
+	@echo
+	@echo "passive voice: "
+	@sh bin/passive.sh *.tex
+	@echo
+	@echo "duplicates: "
+	@perl bin/double.pl *.tex
+
+.PHONY: all help FORCE draft clean spell distclean init bib proof
