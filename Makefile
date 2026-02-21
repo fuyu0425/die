@@ -6,10 +6,18 @@ ODGS := $(patsubst %.odg,%.pdf,$(wildcard fig/*.odg))
 AIS := $(patsubst %.ai,%.pdf,$(wildcard fig/*.ai))
 PLOT := $(patsubst %.gp,%.tex,$(wildcard data/*.gp))
 PYPLOT := $(patsubst %.py,%.pdf,$(wildcard pyplot/*.py))
-DEPS := rev.tex code/fmt.tex abstract.txt $(CODE) $(FIGS) $(ODGS) $(AIS) $(PLOT) $(PYPLOT)
+TBLS := $(patsubst %.py,%.tex,$(wildcard tables/*.py)) # py -> tex
+PLOTS := $(patsubst %.py,%.pdf,$(wildcard plots/*.py)) # py -> pdf
+DEPS := rev.tex code/fmt.tex abstract.txt $(CODE) $(FIGS) $(ODGS) $(AIS) $(PLOT) $(PYPLOT) $(TBLS) $(PLOTS)
 # LTEX := --latex-args="-synctex=1"
 LTEX := --latex-args="-synctex=1 -shell-escape" # for minted version < 3 texlive < 2024
 BTEX := --bibtex-args="-min-crossrefs=99"
+
+# Extract ARGS dependencies from Python file's last line comment
+py_args = $(addprefix tables/,$(shell awk '/./{last=$$0}END{print last}' $(1) | sed -n 's/^#[[:space:]]*ARGS:[[:space:]]*//p'))
+py_args_plots = $(addprefix plots/,$(shell awk '/./{last=$$0}END{print last}' $(1) | sed -n 's/^#[[:space:]]*ARGS:[[:space:]]*//p'))
+
+.SECONDEXPANSION:
 # SHELL:= $(shell echo $$SHELL)
 REPO_NAME := $(shell if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then \
                  git rev-parse --show-toplevel | xargs basename; \
@@ -73,6 +81,24 @@ data/%.tex: data/%.gp ## generate plot
 
 data/%.pdf: data/%.py ## generate plot
 	python3 $^
+
+tables/%.tex: tables/%.py $$(call py_args,tables/$$*.py)
+	set -e ;\
+	DIR=$$(dirname $@) ;\
+	cd $${DIR};\
+	PY=$$(basename $^) ;\
+	TEX=$$(basename $@) ;\
+	ARGS=$$(awk '/./ { last = $$0 } END { print last }' $${PY} | grep '^#[[:space:]]*ARGS:' 2>/dev/null | sed 's/^#[[:space:]]*ARGS:[[:space:]]*//') ;\
+	OUT=$${TEX} PYTHONPATH=$${DIR} $(PYTHON) $${PY} $${ARGS} > /dev/null
+
+plots/%.pdf: plots/%.py $$(call py_args_plots,plots/$$*.py)
+	set -e ;\
+	DIR=$$(dirname $@) ;\
+	cd $${DIR};\
+	PY=$$(basename $^) ;\
+	PDF=$$(basename $@) ;\
+	ARGS=$$(awk '/./ { last = $$0 } END { print last }' $${PY} | grep '^#[[:space:]]*ARGS:' 2>/dev/null | sed 's/^#[[:space:]]*ARGS:[[:space:]]*//') ;\
+	OUT=$${PDF} $(PYTHON) $${PY} $${ARGS} > /dev/null
 
 draft: $(DEPS) ## generate pdf with a draft info
 	@printf '\\newcommand*{\\DRAFT}{}' >> rev.tex
