@@ -240,3 +240,57 @@
     \advance\loopcounter by 1%
     \repeat%
   }
+
+\newcommand{\listingautoref}[1]{%
+  {\renewcommand{\figureautorefname}{Listing}\autoref{#1}}%
+}
+
+\usepackage{refcount} % provides \getpagerefnumber
+
+% autoref with page number if not in the same page!
+\NewDocumentCommand{\autorefp}{s m}{%
+  \IfBooleanTF{#1}{%
+    % starred version - no hyperlink
+    \autoref*{#2}%
+  }{%
+    % unstarred version - with hyperlink
+    \autoref{#2}%
+  }%
+  \ifnum\getpagerefnumber{#2}=\thepage
+    % same page → do nothing
+  \else
+    \IfBooleanTF{#1}{%
+      % starred version - no hyperlink
+    \ (page~\pageref*{#2})%
+    }{%
+      % unstarred version - with hyperlink
+    \ (page~\pageref{#2})%
+    }%
+  \fi
+}
+
+% --- Backup original \autoref ---
+\let\oldautoref\autoref
+
+% --- Redefine \autoref to include page number only if not on current page ---
+\if 0
+\renewcommand{\autoref}[1]{%
+  \oldautoref{#1}%
+  \ifnum\getpagerefnumber{#1}=\thepage
+    % same page → do nothing
+  \else
+    \ (page~\pageref{#1})%
+  \fi
+}
+\fi
+
+% Define a custom command with star form
+\NewDocumentCommand{\page}{s m}{%
+  \IfBooleanTF{#1}{%
+    % starred version - no hyperlink
+    page~\pageref*{#2}%
+  }{%
+    % unstarred version - with hyperlink
+    page~\pageref{#2}%
+  }%
+}
