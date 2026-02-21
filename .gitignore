@@ -21,8 +21,11 @@
 !/pyplot/*.pdf
 .latexrun.db
 /_minted-p/
-/p.synctex.gz
+*.synctex.gz
 /auto
 /sty/auto
+/code/auto
+/build-rev/
+/submission
 /.venv/
 *.pyc
