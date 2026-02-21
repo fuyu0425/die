@@ -20,9 +20,42 @@
 
 \newcommand{\XX}[0]{\textcolor{red}{XXX}}
 \newcommand{\XXX}[1]{\textcolor{red}{XXX: #1}}
-\newcommand{\rev}[1]{\textcolor{red}{#1}}
-\newcommand{\TODO}[1]{\noindent{\color{Melon} {\bf \fbox{TODO:}} #1}}
+\newif\ifrev
+\ifdefined\inrev
+  \revtrue
+  \usepackage[
+  draft,
+  commandnameprefix=ifneeded,
+  authormarkup=none,
+  commentmarkup=margin]{changes}
+  \newcommand{\rev}[1]{\textcolor{blue}{#1}}
+  \newcommand{\revd}[1]{\textcolor{red}{\sout{#1}}}
+  \newcommand{\revonly}[1]{\textcolor{blue}{#1}}
+\else
+  \revfalse
+  \usepackage[final,commandnameprefix=ifneeded]{changes}
+  \newcommand{\rev}[1]{#1}
+  \newcommand{\revd}[1]{\ignorespaces}
+  \newcommand{\revonly}[1]{\ignorespaces}
+\fi
 
+% NOTE: hide TODO with star form \TODO*
+\NewDocumentCommand{\TODO}{s m}{%
+  \IfBooleanTF{#1}{}{%
+    \noindent{\color{Melon} {\bf \fbox{TODO:}} #2}%
+  }%
+}
+\newcommand{\FIXME}[1]{\noindent{\color{red} {\bf \fbox{FIXME:}} #1}}
+% Define a darker green
+\definecolor{darkgreen}{RGB}{0,128,0}
+\newcommand{\DONE}[1]{\noindent{\color{darkgreen} {\bf \fbox{DONE:}} #1}}
+\newcommand{\NOTE}[1]{\noindent{\color{blue} {\bf \fbox{NOTE:}} #1}}
+\newcommand{\REVNOTE}[1]{%
+  \revonly{
+    \noindent
+    {\color{blue}\fbox{\parbox{\linewidth}{\bfseries NOTE: #1}}}%
+  }
+}
 
 \input{cmds}
 % To be compatible with Overleaf

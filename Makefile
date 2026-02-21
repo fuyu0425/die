@@ -33,6 +33,11 @@ all: $(DEPS) ## generate a pdf
 	cp p.pdf $(REPO_NAME).pdf
 	# bin/revert-pdf.sh p.pdf # for emacs
 
+rev: $(DEPS) ## generate diff-highlighted pdf
+	@TEXINPUTS="sty:" $(UV_RUN) bin/latexrun $(LTEX) $(BTEX) p-rev
+	cp latex.out/p-rev.synctex.gz .
+	cp p-rev.pdf $(REPO_NAME)-rev.pdf
+
 submit: $(DEPS) ## proposal function
 	@for f in $(wildcard submit-*.tex); do \
 		TEXINPUTS="sty:" $(UV_RUN) bin/latexrun $$f; \
