@@ -24,3 +24,5 @@
 /p.synctex.gz
 /auto
 /sty/auto
+/.venv/
+*.pyc

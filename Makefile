@@ -1,5 +1,7 @@
 MAIN ?= p
 DIFF ?= HEAD^
+UV_RUN := $(if $(shell command -v uv 2>/dev/null),uv run,)
+PYTHON := $(UV_RUN) python
 CODE := $(addsuffix .tex,$(filter-out %.tex,$(wildcard code/*)))
 FIGS := $(patsubst %.svg,%.pdf,$(wildcard fig/*.svg))
 ODGS := $(patsubst %.odg,%.pdf,$(wildcard fig/*.odg))
@@ -26,14 +28,14 @@ REPO_NAME := $(shell if git rev-parse --is-inside-work-tree > /dev/null 2>&1; th
               fi)
 
 all: $(DEPS) ## generate a pdf
-	@TEXINPUTS="sty:" bin/latexrun $(LTEX) $(BTEX) $(MAIN)
+	@TEXINPUTS="sty:" $(UV_RUN) bin/latexrun $(LTEX) $(BTEX) $(MAIN)
 	cp latex.out/$(MAIN).synctex.gz .
 	cp p.pdf $(REPO_NAME).pdf
 	# bin/revert-pdf.sh p.pdf # for emacs
 
 submit: $(DEPS) ## proposal function
 	@for f in $(wildcard submit-*.tex); do \
-		TEXINPUTS="sty:" bin/latexrun $$f; \
+		TEXINPUTS="sty:" $(UV_RUN) bin/latexrun $$f; \
 	done
 
 diff: $(DEPS) ## generate diff-highlighed pdf
@@ -53,13 +55,13 @@ rev.tex: FORCE
 	   "$(shell git log -1 --format='%cd' --date=format:'%Y-%m-%d %H:%M:%S' HEAD)" > $@
 
 code/%.move.tex: code/%.move ## build highlighted tex code from source code
-  pygmentize -P tabsize=4 -P mathescape -x -l ./pygments/lexers/move.py:MoveLexer -f latex $^ | bin/mark.py > $@
+  $(UV_RUN) pygmentize -P tabsize=4 -P mathescape -x -l ./pygments/lexers/move.py:MoveLexer -f latex $^ | bin/mark.py > $@
 
 code/%.tex: code/% ## build highlighted tex code from source code
-	pygmentize -P tabsize=4 -P mathescape -f latex $^ | bin/mark.py > $@
+	$(UV_RUN) pygmentize -P tabsize=4 -P mathescape -f latex $^ | bin/mark.py > $@
 
 code/fmt.tex: ## generate color table
-	pygmentize -f latex -S default > $@
+	$(UV_RUN) pygmentize -f latex -S default > $@
 
 fig/%.pdf: fig/%.svg ## generate pdf from svg
 	bin/svg2pdf.sh ${CURDIR}/$^ ${CURDIR}/$@
@@ -71,7 +73,7 @@ fig/%.pdf: fig/%.ai ## generate pdf from Adobe Illustrator
 	bin/ai2pdf.sh $^ $@
 
 pyplot/%.svg: pyplot/%.py ## generate svg from pyplot
-	OUT=$@ PYTHONPATH=pyplot/shared python $^
+	OUT=$@ PYTHONPATH=pyplot/shared $(PYTHON) $^
 
 pyplot/%.pdf: pyplot/%.svg ## generate pdf from pyplot svg
 	bin/svg2pdf.sh ${CURDIR}/$^ ${CURDIR}/$@
@@ -80,7 +82,7 @@ data/%.tex: data/%.gp ## generate plot
 	gnuplot $^
 
 data/%.pdf: data/%.py ## generate plot
-	python3 $^
+	$(PYTHON) $^
 
 tables/%.tex: tables/%.py $$(call py_args,tables/$$*.py)
 	set -e ;\
@@ -102,11 +104,11 @@ plots/%.pdf: plots/%.py $$(call py_args_plots,plots/$$*.py)
 
 draft: $(DEPS) ## generate pdf with a draft info
 	@printf '\\newcommand*{\\DRAFT}{}' >> rev.tex
-	@TEXINPUTS="sty:" bin/latexrun $(LTEX) $(BTEX) $(MAIN)
+	@TEXINPUTS="sty:" $(UV_RUN) bin/latexrun $(LTEX) $(BTEX) $(MAIN)
 
 watermark: $(DEPS) ## generate pdf with a watermark
 	@printf '\\usepackage[firstpage]{draftwatermark}' >> rev.tex
-	@TEXINPUTS="sty:" bin/latexrun $(LTEX) $(BTEX) $(MAIN)
+	@TEXINPUTS="sty:" $(UV_RUN) bin/latexrun $(LTEX) $(BTEX) $(MAIN)
 
 spell: ## run a spell check
 	@for i in *.tex fig/*.tex; do bin/aspell.sh tex $$i; done
@@ -121,7 +123,7 @@ bib: all ## print bib used in the paper
 	bibexport latex.out/$(MAIN).aux
 
 clean: ## clean up
-	@bin/latexrun --clean
+	@$(UV_RUN) bin/latexrun --clean
 	rm -f abstract.txt
 	rm -f $(MAIN).synctex.gz
 
