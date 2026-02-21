@@ -30,6 +30,42 @@
 
 % \myexternaldocument{arxiv}
 
+\newcounter{referencepage}
+\setcounter{referencepage}{999999} % Set to a large number by default
+% Set up page limit warning
+\AtBeginDocument{%
+  \let\oldthebibliography\thebibliography
+  \renewcommand{\thebibliography}[1]{%
+    \setcounter{referencepage}{\value{page}}%
+    \oldthebibliography{#1}%
+  }
+}
+
+\backgroundsetup{contents={}}
+
+\newcommand{\maxmainpages}{11} % main pages limit (excluding references)
+\newcommand{\ShowWarning}{%
+  \ifthenelse{\value{page}>\maxmainpages\and \value{page}<\thereferencepage}{%
+    \backgroundsetup{
+      contents={%
+        \begin{tikzpicture}[remember picture,overlay]
+          \node[yshift=-0.5in] at (current page.north) {%
+            \textcolor{red}{\Large\bfseries WARNING: Page limit is
+            \maxmainpages~pages! It's now page \thepage .}%
+          };
+        \end{tikzpicture}%
+      },
+      angle=0,
+      position={current page.north},
+      scale=1,
+      opacity=1
+    }%
+    \BgMaterial%
+  }{}%
+}
+
+\AddEverypageHook{\ShowWarning}
+
 \begin{document}
 
 \input{hdr}
