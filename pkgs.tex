@@ -38,11 +38,12 @@
 
 % pseudo code
 %%%% minted
-\makeatletter
-\@namedef{ver@lineno.sty}{9999/12/31}
-\@namedef{opt@lineno.sty}{}
-\makeatother
-\usepackage{minted} % for minted v3+
+\IfFileExists{minted2.sty}{%
+    \usepackage{minted2}   % Use legacy version on new systems (TeX Live 2025+)
+}{%
+    \usepackage{minted}    % Use standard version on old systems (already v2)
+}
+
 
 % \usepackage[outputdir=latex.out]{minted} % for older minted and need -shell-escape flags
 %%%% other method
