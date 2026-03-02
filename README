@@ -8,7 +8,12 @@ die: a paper template
   - Python 3.x
   - pygmentize
 
-    $ pip install Pygments 
+    $ pip install Pygments
+
+  - macOS users: install GNU Make via Homebrew and use `gmake` instead of `make`
+
+    $ brew install make
+    $ export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
 
 1. clone the git repo:
 

@@ -1,3 +1,6 @@
+# NOTE: macOS users should install GNU Make via `brew install make`
+#       and use `gmake` or add gnubin to PATH:
+#       export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
 MAIN ?= p
 DIFF ?= HEAD^
 UV_RUN := $(if $(shell command -v uv 2>/dev/null),uv run,)
