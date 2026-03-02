@@ -10,7 +10,8 @@ die: a paper template
 
     $ pip install Pygments
 
-  - macOS users: install GNU Make via Homebrew and use `gmake` instead of `make`
+  - macOS ships with Make 3.81, which is too old for this Makefile.
+    Install GNU Make via Homebrew and use `gmake` instead of `make`
 
     $ brew install make
     $ export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"

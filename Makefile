@@ -1,5 +1,5 @@
-# NOTE: macOS users should install GNU Make via `brew install make`
-#       and use `gmake` or add gnubin to PATH:
+# NOTE: macOS ships with Make 3.81, which is too old for this Makefile.
+#       Install GNU Make via `brew install make` and use `gmake` or add gnubin to PATH:
 #       export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
 MAIN ?= p
 DIFF ?= HEAD^
