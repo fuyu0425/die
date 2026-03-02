@@ -10,6 +10,8 @@ die: a paper template
 
     $ pip install Pygments
 
+  - (Optional) uv: if installed, `make` auto-runs `uv sync` to set up .venv
+
   - macOS ships with Make 3.81, which is too old for this Makefile.
     Install GNU Make via Homebrew and use `gmake` instead of `make`
 
