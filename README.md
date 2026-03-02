@@ -13,6 +13,8 @@
 
 - (Optional) [uv](https://docs.astral.sh/uv/): if installed, `make` auto-runs `uv sync` to set up `.venv`
 
+- (Optional) [just](https://just.systems/): allows running build commands from any subdirectory via `just <target>`
+
 - macOS ships with Make 3.81, which is too old for this Makefile.
   Install GNU Make via Homebrew and use `gmake` instead of `make`
 
