@@ -166,4 +166,4 @@ proof: ## check weasel words, passive voice, duplicates
 	@echo "duplicates: "
 	@perl bin/double.pl *.tex
 
-.PHONY: all help FORCE draft clean spell distclean init bib proof
+.PHONY: all rev submit diff checkout help FORCE draft watermark clean spell distclean init bib text proof
